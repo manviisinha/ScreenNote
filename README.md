@@ -60,4 +60,17 @@ Since this extension is loaded locally:
 - `Donate.jpeg`: The QR code image for the donation popup.
 
 ---
-*Built with ❤️ for better visual communication.*
+
+## 🤝 Support & Suggestions
+
+Have an idea to make ScreenNote even better? Found a bug? 
+Feel free to [open an issue](https://github.com/manviisinha/ScreeNote/issues) or submit a pull request! Any suggestions and contributions are always welcome.
+
+If you find this extension helpful, consider starring the repository ⭐ or supporting the project via the donation button inside the extension!
+
+## 📜 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+*Built from scratch with ❤️ by [@manviisinha](https://github.com/manviisinha).*
