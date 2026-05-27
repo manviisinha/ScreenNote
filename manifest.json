@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "ScreenNote — Record & Annotate",
+  "version": "1.0",
+  "description": "Record your screen and draw/write annotations in real-time",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabCapture"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["overlay.html", "Donate.jpeg"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
