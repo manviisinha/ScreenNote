@@ -131,6 +131,31 @@ For professional creators and educators, speed is essential. ScreenNote is fully
 
 ---
 
+## 🔒 Security, Privacy & Data Safety
+
+Your privacy is a fundamental priority. Unlike commercial alternatives that upload your screen captures and webcam footage to their proprietary cloud servers, ScreenNote is built on a **strict local-first architecture**:
+
+*   **Zero Server Uploads:** ScreenNote does not operate any backend server or cloud database. Your recordings, snapshots, drawing data, and voice feeds never leave your local computer.
+*   **100% Client-Side Processing:** All WebRTC streams (microphone, display, and camera) are encoded directly inside Google Chrome's sandboxed browser context.
+*   **No Tracking or Telemetry:** The extension contains absolutely no tracking cookies, analytics engines, user behavior tracking, or telemetry scripts. It is completely clean and private.
+*   **Offline-Ready:** You can use ScreenNote's drawing, snapshot, and recording tools completely offline, with no active internet connection required.
+
+---
+
+## 🤝 Contributing & Pull Requests
+
+ScreenNote is an open-source tool built for teachers, learners, and developers. Contributions of all sizes are highly welcomed! Whether you want to fix a bug, optimize performance, or introduce a premium-grade feature, your help makes ScreenNote better for everyone.
+
+### How to Contribute:
+1.  **Fork the Repository:** Create a personal copy of the repository on GitHub.
+2.  **Add Features / Fix Bugs:** Modify `content.js`, `content.css`, or other assets. Test your changes locally in Chrome's Developer Mode.
+3.  **Ensure Clean Code:** Maintain the lightweight vanilla JavaScript structure without introducing heavy external frameworks or dependencies.
+4.  **Submit a Pull Request (PR):** Open a PR detailing your changes, their real-world benefits, and what you have verified.
+
+If you have a feature suggestion or find a bug, feel free to [open an issue](https://github.com/manviisinha/ScreeNote/issues) or submit a pull request!
+
+---
+
 ## ☕ Support the Project
 
 ScreenNote is built and maintained with a focus on making education and digital collaboration free and accessible to everyone. If ScreenNote has helped you teach a class, study for exams, or report bugs faster, consider supporting development!
@@ -143,6 +168,6 @@ You can scan the QR code directly inside the extension toolbar using GPay, Phone
 
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for details.
 
 *Crafted with ❤️ for teachers, learners, and builders everywhere by [@manviisinha](https://github.com/manviisinha).*
