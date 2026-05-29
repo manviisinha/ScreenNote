@@ -1,173 +1,156 @@
-# 🎥 ScreenNote — Record, Annotate & Present (Zero-Install Explainer Tool)
+# ScreenNote — Record & Annotate
 
 <div align="center">
-  
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  [![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge%20%7C%20Brave-blue.svg)](#)
-  [![Tech](https://img.shields.io/badge/Tech-HTML5%20%7C%20Vanilla%20JS%20%7C%20CSS-orange.svg)](#)
-  [![Architecture](https://img.shields.io/badge/Architecture-WebRTC%20%2F%20Canvas%202D-brightgreen.svg)](#)
-  
-  **An advanced, ultra-lightweight, browser-native extension that combines pro-grade screen annotations, high-definition display recording, and picture-in-picture webcam streaming into a single, cohesive canvas.**
-  
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge%20%7C%20Brave-blue.svg)](#)
+[![Manifest](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](#)
+[![Tech](https://img.shields.io/badge/Tech-Vanilla%20JS%20%7C%20WebRTC%20%7C%20Canvas%202D-orange.svg)](#)
+
+**A zero-install, browser-native Chrome extension that combines pro-grade screen annotations, HD screen recording, microphone capture, and picture-in-picture webcam streaming into a single, lightweight tool.**
+
 </div>
 
 ---
 
-## 💡 The Real-Life Problem ScreenNote Solves
+## 💡 What Problem Does ScreenNote Solve?
 
-In today’s remote-first world, explaining digital concepts, teaching students, or reporting software bugs is a constant challenge. However, users are forced to choose between highly fragmented or bloated solutions:
+### 1. Annotation + Recording in One Place
+Most free tools do only one thing — draw *or* record. Getting both in one place usually means paying for a premium app. ScreenNote gives you drawing tools, screen recording, microphone capture, and a draggable facecam overlay — completely free and open source.
 
-### 1. The "Feature Gap" Paywall (Annotation vs. Recording)
-* **The Problem:** Most free tools only do *one thing*. You can find simple browser drawing tools, or you can find simple screen recorders. Finding a tool that seamlessly overlays **drawing tools + screen recording + microphone + draggable facecam (webcam)** usually requires a premium, paid subscription to commercial software (charging anywhere from $10 to $30 a month per user).
-* **The ScreenNote Solution:** ScreenNote brings these features together into a single, unified, open-source dashboard. Draw while you record, stream your face in a floating bubble, and mute/unmute your microphone on the fly—completely for free.
+### 2. Zero Disk Bloat
+Desktop recorders (OBS, Camtasia) install gigabytes of software and cache raw footage to your drive. ScreenNote runs entirely inside Chrome's sandbox with **no installation, no background services, and no cached files**. Recordings are encoded on-the-fly as lightweight `.webm` files and saved straight to your Downloads folder.
 
-### 2. The "C-Drive" & Resource Bloat Crisis
-* **The Problem:** Desktop-grade recording apps (like OBS, Camtasia, or native OS capture suites) are heavy. They require gigabytes of disk space for installation, force background services to run, and cache huge, uncompressed raw footage files directly to your C-Drive. Over time, this leads to massive system slowdowns and a dreaded **"Disk Space Full"** warning. 
-* **The ScreenNote Solution:** Built entirely on modern browser-native APIs (WebRTC & Canvas), ScreenNote runs completely sandboxed in your browser. It requires **zero software installation** and **zero background cache**. Videos are encoded dynamically on-the-fly and saved as highly-efficient, lightweight `.webm` files directly through your browser’s standard download stream, bypassing system drive clutter.
-
-### 3. The Educator's Digital Blackboard
-* **The Problem:** Modern virtual learning is often detached and static. PowerPoint presentations lack the dynamic feel of a physical chalkboard, and teachers struggle to draw focus to specific bullets while maintaining visual contact (face recording) with their students.
-* **The ScreenNote Solution:** ScreenNote acts as an interactive digital chalkboard. Teachers can underline key paragraphs, draw arrows to diagrams, highlight formulas, and elaborate on concepts in real-time, all while their circular webcam bubble floats alongside to keep students engaged and connected.
-
-### 4. The Self-Study & Active Recall Accelerator
-* **The Problem:** Reading static textbook PDFs, academic research, or online documentation can lead to passive, ineffective learning.
-* **The ScreenNote Solution:** Students can load up study materials, toggle ScreenNote, draw mind-maps directly over the page, type inline footnotes, and record their screen while explaining the concept aloud. This active recall and elaboration method dramatically increases information retention, creating personal video study guides instantly.
+### 3. The Educator's Digital Chalkboard
+Draw arrows, highlight formulas, type inline annotations, and record your screen — all while your webcam bubble floats alongside so students stay connected. Works on any webpage: PDFs, slides, docs, dashboards.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Features
 
-* ✏️ **Pro-Grade Annotation Engine:** Select from a Pen, Flat Highlighter, Arrow, Rectangle, Circle, and Inline Text tool to write on any live webpage.
-* 🎥 **Webcam Picture-in-Picture (Facecam):** Record with a floating, circular facecam bubble. Move it anywhere on the screen by dragging and dropping so it never blocks key content.
-* 🎙️ **Dual-Stream Audio Capture & Real-Time Mute:** Capture system/tab audio alongside your microphone. Toggle your microphone state (mute/unmute) in real-time during recording with a single shortcut or click.
-* 🔄 **Persistent Tab-Synchronized Toolbar:** The vertical toolbar follows you. Switch tabs, refresh pages, or navigate around the web; the toolbar remembers its exact pixel-coordinates and syncs active drawing modes instantly across all tabs.
-* 🎨 **Premium Glassmorphic UI:** A sleek, semi-transparent user interface styled with vibrant HSL colors, smooth transitions, and high-DPI custom icons that feel premium and modern.
-* 💾 **Instant Snapshots:** Snap high-resolution PNGs of your drawings and webpage underlays with a single click.
-* 🛡️ **Zero-Install & Sandbox Secure:** Standard Manifest V3 Chrome Extension. Safe, lightweight, and automatically uninstalls without leaving orphaned system registries or temp cache folders.
+| Feature | Details |
+|---|---|
+| ✏️ **Pen** | Freehand drawing with adjustable size & color |
+| 🖊️ **Highlighter** | Flat marker effect with no alpha accumulation |
+| ➡️ **Arrow** | Straight arrows pointing to any element |
+| ▭ **Rectangle** | Outline boxes with live preview |
+| ⭕ **Circle / Ellipse** | Draw ellipses with live preview |
+| **T Text** | Click anywhere to type; commits to canvas on Enter |
+| 🧹 **Eraser** | Pixel-precise destination-out erasing |
+| ↩️ **Undo / Redo** | 50-step canvas history |
+| 💾 **Save PNG** | Download the current canvas as a transparent PNG |
+| 🎥 **Screen Recording** | HD WebRTC capture, VP9+Opus, auto-saves `.webm` |
+| 🙂 **Facecam (PiP)** | Draggable webcam overlay during recording |
+| 🎙️ **Mic Toggle** | Real-time mute/unmute during recording |
+| 🎨 **Color Picker** | Full color wheel for all drawing tools |
+| 📐 **Size Slider** | Adjust stroke width (1–20 px) |
+| 🔄 **Persistent Toolbar** | Remembers position and active state across tabs |
+| ⌨️ **Keyboard Shortcuts** | Full hotkey set for every tool |
+| ☕ **Donate** | Ko-fi link + UPI QR code built right in |
 
 ---
 
-## 🚀 Installation Guide (Developer Mode)
+## 🚀 Installation (Developer Mode)
 
-Since ScreenNote is fully local and open-source, you can easily load it as an unpacked extension:
+> ScreenNote is not yet on the Chrome Web Store. Load it as an unpacked extension:
 
-1. **Download the Repository:** Clone or download this repository to your local drive.
-2. **Open Extensions Page:** Open Google Chrome (or Edge/Brave) and navigate to `chrome://extensions/`.
-3. **Enable Developer Mode:** Toggle the **"Developer mode"** switch in the top-right corner.
-4. **Load Unpacked:** Click the **"Load unpacked"** button in the top-left corner.
-5. **Select Folder:** Select the `screen-annotator-extension` subfolder (the directory containing `manifest.json`).
-6. **Pin to Toolbar:** Click the extensions puzzle icon in Chrome and pin **ScreenNote** for quick, one-click access!
+1. **Clone / Download** this repository.
+2. Open **`chrome://extensions/`** in Chrome, Edge, or Brave.
+3. Enable **Developer mode** (top-right toggle).
+4. Click **Load unpacked** and select the `screen-annotator-extension` folder (the one containing `manifest.json`).
+5. Click the puzzle icon in the Chrome toolbar and **pin ScreenNote** for one-click access.
 
 ---
 
-## 🛠️ Technical Deep-Dive & Architecture
+## ⌨️ Keyboard Shortcuts
 
-ScreenNote is built using a highly-optimized vanilla JavaScript architecture, maximizing performance without the overhead of modern frame libraries (React/Vue/Webpack).
+> Shortcuts only fire when the annotation overlay is active and no input field on the page has focus.
 
-```mermaid
-graph TD
-    A[User Starts Extension] --> B[content.js Injected]
-    B --> C[Retrieve Coordinates & State from chrome.storage.local]
-    C --> D[Initialize High-DPI Canvas & Floating Toolbar]
-    
-    subgraph WebRTC Recording Pipeline
-        E[navigator.mediaDevices.getDisplayMedia] -->|Screen & Tab Audio| G[Composite Stream]
-        F[navigator.mediaDevices.getUserMedia] -->|Microphone Audio| G
-        G --> H[MediaRecorder API]
-        H -->|VP9/Opus Compression| I[On-the-Fly .webm Stream]
-        I -->|Trigger Download| J[User Downloads Folder]
-    end
-    
-    subgraph Webcam Rendering
-        K[navigator.mediaDevices.getUserMedia] -->|Webcam Video| L[Floating Video Element]
-        L -->|Appended to Page DOM| M[Draggable Interface]
-    end
-    
-    D -->|Start Capture| WebRTC
-    D -->|Enable Facecam| Webcam
+| Shortcut | Action |
+|---|---|
+| `P` | Pen tool |
+| `H` | Highlighter |
+| `E` | Eraser |
+| `T` | Text tool |
+| `A` | Arrow tool |
+| `R` | Rectangle tool |
+| `S` | Save PNG snapshot |
+| `M` | Toggle microphone mute |
+| `Ctrl + Z` | Undo |
+| `Ctrl + Y` | Redo |
+| `Esc` | Hide toolbar & deactivate overlay |
+
+---
+
+## 🏗️ Architecture
+
+```
+screen-annotator-extension/
+├── manifest.json       # Manifest V3 — permissions, icons, CSP
+├── background.js       # Service worker — tab management, injection, messaging
+├── content.js          # Annotation engine — canvas, toolbar, recording
+├── content.css         # All UI styles — toolbar, toasts, donate popup
+├── Donate.jpeg         # UPI QR code image
+└── icons/
+    ├── icon16.png
+    ├── icon48.png
+    └── icon128.png
 ```
 
-### Key Implementation Details:
+### Key Implementation Details
 
-1. **Double-Alpha Highlighter Anti-Aliasing:**
-   When using a standard canvas highlighter with opacity (e.g. `globalAlpha = 0.4`), overlapping brush strokes accumulate alpha values, leading to dark, messy artifacts at stroke intersections. ScreenNote solves this by drawing your path onto an **offscreen canvas** at full opacity (`globalAlpha = 1.0`) with flat ends (`lineCap = 'square'`), and then compositing the entire offscreen buffer onto the main page canvas *once* at `0.4` opacity. The result is a perfect, flat, professional highlighter effect.
+**1. Highlighter Without Alpha Bleed**
+Drawing with `globalAlpha < 1` on a canvas causes overlapping strokes to darken at intersections. ScreenNote fixes this by rendering the full highlight stroke onto an offscreen canvas at `globalAlpha = 1`, then compositing it onto the main canvas *once* at `0.4` opacity — giving a clean, flat marker look.
 
-2. **Ultra-Reactive Cross-Tab Synchronization:**
-   Rather than relying on continuous polling or round-trip background service-worker messaging, ScreenNote uses the browser-native `chrome.storage.onChanged` API within content scripts. The instant a toolbar setting or activation state shifts on tab A, all other open tabs immediately react to the local storage changes, updating their UI state and drawing layers synchronously.
+**2. Cross-Tab Sync via `chrome.storage.onChanged`**
+Instead of round-trip background messages, content scripts listen directly to `chrome.storage.onChanged`. The instant the toolbar state changes on any tab, every other tab reacts immediately — no polling, no delay.
 
-3. **Orphaned Context Guard:**
-   Chrome extensions frequently suffer from "orphaned contexts" when they are updated or reloaded by a developer, leaving dead event listeners and broken HTML elements lingering on web pages. ScreenNote implements a custom re-injection guard on load:
-   ```javascript
-   if (window.__screenNoteLoaded) {
-     ['screennote-overlay', 'screennote-toolbar', 'screennote-textinput', 'sn-donate-popup']
-       .forEach(id => document.getElementById(id)?.remove());
-   }
-   window.__screenNoteLoaded = true;
-   ```
-   This ensures clean teardowns and avoids duplicate overlays, making the developer experience seamless.
+**3. Orphaned Context Guard**
+When an extension is reloaded mid-session, old DOM elements remain on the page. ScreenNote detects this via `window.__screenNoteLoaded` and tears down stale elements before re-initializing, preventing duplicate overlays.
 
-4. **Dynamic Resizing & High-DPI Support:**
-   To keep drawings perfectly aligned with underlying text, the canvas scales dynamically based on the device's hardware pixel density (`window.devicePixelRatio`). When resizing occurs, canvas pixels are backed up, coordinates scaled, and content redrawn instantly to prevent blurriness or layout drifting.
+**4. High-DPI Canvas**
+Canvas dimensions are scaled by `window.devicePixelRatio`. On resize, pixel data is backed up, the canvas is resized and re-scaled, then the saved data is restored — keeping annotations sharp on all displays.
+
+**5. Composite Audio Stream**
+Screen audio (if shared by the user) and microphone audio are merged into a single `MediaStream` before being passed to `MediaRecorder`. Real-time mute works by toggling `track.enabled` on the mic audio track — no need to restart the recorder.
 
 ---
 
-## ⌨️ Interactive Controls & Shortcuts
+## 🔒 Security & Privacy
 
-For professional creators and educators, speed is essential. ScreenNote is fully equipped with global hotkeys:
-
-| Key Shortcut | Tool / Action | Description |
-| :--- | :--- | :--- |
-| <kbd>P</kbd> | **Pen Tool** | Activate the fine-point writing brush. |
-| <kbd>H</kbd> | **Highlighter** | Select the flat-marker highlight overlay. |
-| <kbd>E</kbd> | **Eraser** | Erase drawing vectors smoothly. |
-| <kbd>T</kbd> | **Text Box** | Click anywhere to type high-DPI text overlays. |
-| <kbd>A</kbd> | **Arrow tool** | Draw straight arrows pointing to critical layout areas. |
-| <kbd>R</kbd> | **Rectangle** | Outline sections with boxes. |
-| <kbd>M</kbd> | **Toggle Mic** | Mute or unmute your voice stream in real-time. |
-| <kbd>Ctrl</kbd> + <kbd>Z</kbd> | **Undo** | Step back in drawing history. |
-| <kbd>Ctrl</kbd> + <kbd>Y</kbd> | **Redo** | Step forward in drawing history. |
-| <kbd>S</kbd> | **Save Snapshot** | Download the current canvas drawing as a transparent PNG. |
-| <kbd>Esc</kbd> | **Minimize Toolbar**| Instantly hide drawings and collapse toolbar. |
+- **Zero server-side code.** No backend. No cloud. No accounts.
+- **No telemetry or analytics** of any kind.
+- **All media stays local.** Recordings, snapshots, and webcam feeds never leave your machine.
+- **Offline capable.** All tools work without an internet connection.
+- **Manifest V3** — uses the latest, most security-constrained extension architecture.
+- **Minimal permissions** — only `activeTab`, `scripting`, `storage`, and `tabCapture`.
 
 ---
 
-## 🔒 Security, Privacy & Data Safety
+## 🤝 Contributing
 
-Your privacy is a fundamental priority. Unlike commercial alternatives that upload your screen captures and webcam footage to their proprietary cloud servers, ScreenNote is built on a **strict local-first architecture**:
+Contributions are welcome! Whether it's a bug fix, a new tool, or a UX improvement:
 
-*   **Zero Server Uploads:** ScreenNote does not operate any backend server or cloud database. Your recordings, snapshots, drawing data, and voice feeds never leave your local computer.
-*   **100% Client-Side Processing:** All WebRTC streams (microphone, display, and camera) are encoded directly inside Google Chrome's sandboxed browser context.
-*   **No Tracking or Telemetry:** The extension contains absolutely no tracking cookies, analytics engines, user behavior tracking, or telemetry scripts. It is completely clean and private.
-*   **Offline-Ready:** You can use ScreenNote's drawing, snapshot, and recording tools completely offline, with no active internet connection required.
+1. Fork the repository.
+2. Make changes to `content.js`, `content.css`, `background.js`, or `manifest.json`.
+3. Test locally in Chrome Developer Mode.
+4. Open a Pull Request with a clear description of what changed and why.
 
----
-
-## 🤝 Contributing & Pull Requests
-
-ScreenNote is an open-source tool built for teachers, learners, and developers. Contributions of all sizes are highly welcomed! Whether you want to fix a bug, optimize performance, or introduce a premium-grade feature, your help makes ScreenNote better for everyone.
-
-### How to Contribute:
-1.  **Fork the Repository:** Create a personal copy of the repository on GitHub.
-2.  **Add Features / Fix Bugs:** Modify `content.js`, `content.css`, or other assets. Test your changes locally in Chrome's Developer Mode.
-3.  **Ensure Clean Code:** Maintain the lightweight vanilla JavaScript structure without introducing heavy external frameworks or dependencies.
-4.  **Submit a Pull Request (PR):** Open a PR detailing your changes, their real-world benefits, and what you have verified.
-
-If you have a feature suggestion or find a bug, feel free to [open an issue](https://github.com/manviisinha/ScreeNote/issues) or submit a pull request!
+Please keep the codebase framework-free (vanilla JS only) and avoid adding new permissions without a strong reason.
 
 ---
 
-## ☕ Support the Project
+## ☕ Support
 
-ScreenNote is built and maintained with a focus on making education and digital collaboration free and accessible to everyone. If ScreenNote has helped you teach a class, study for exams, or report bugs faster, consider supporting development!
+If ScreenNote has saved you time or made your presentations better, consider supporting development:
 
-You can scan the QR code directly inside the extension toolbar using GPay, PhonePe, Paytm, or any UPI app:
-
-* **UPI ID:** `manvisinhan4500@oksbi`
+- **Ko-fi:** [ko-fi.com/manviisinha](https://ko-fi.com/manviisinha) — Credit card, PayPal, or global UPI
+- **UPI:** `manvisinhan4500@oksbi` — Scan the QR code inside the extension
 
 ---
 
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) for details.
 
-*Crafted with ❤️ for teachers, learners, and builders everywhere by [@manviisinha](https://github.com/manviisinha).*
+*Crafted with ❤️ for teachers, learners, and builders by [@manviisinha](https://github.com/manviisinha).*

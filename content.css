@@ -33,11 +33,11 @@
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
-  padding: 8px;
+  padding: 6px;
   display: none;
   flex-direction: column;
-  gap: 8px;
-  width: 78px;
+  gap: 5px;
+  width: 76px;
   max-height: calc(100vh - 40px);
   overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -150,7 +150,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  min-height: 34px;
+  min-height: 28px;
   flex-direction: column;
 }
 
@@ -201,14 +201,16 @@
   color: #111827 !important;
   border: none;
   border-radius: 8px;
-  padding: 4px 6px;
-  font-size: 11px;
+  padding: 4px 4px;
+  font-size: 10px;
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
   text-align: center;
   transition: all 0.2s ease;
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .sn-donate-btn:hover {
@@ -394,7 +396,7 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 18px 16px 14px;
-  width: 210px;
+  width: 230px;
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255,255,255,0.05);
   font-family: 'Segoe UI', system-ui, sans-serif;
   text-align: center;
@@ -437,10 +439,106 @@
   color: #f9fafb;
 }
 
+/* ── Donate Tabs ── */
+.sn-donate-tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 3px;
+  margin: 12px 0 8px;
+  gap: 2px;
+}
+
+.sn-donate-tab {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #9ca3af;
+  border-radius: 6px;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sn-donate-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sn-donate-tab.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Donate Content & Panes ── */
+.sn-donate-content {
+  min-height: 215px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sn-tab-pane {
+  display: none;
+  animation: sn-fade-in 0.2s ease;
+}
+
+.sn-tab-pane.active {
+  display: block;
+}
+
+@keyframes sn-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .sn-donate-sub {
   margin: 0 0 10px;
   font-size: 11px;
-  color: #6b7280;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+/* ── Ko-fi Specific Styles ── */
+.sn-donate-kofi-link {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #FF5E5B, #e04b48);
+  color: #ffffff !important;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(255, 94, 91, 0.25);
+  margin: 16px auto 10px;
+  width: calc(100% - 28px);
+}
+
+.sn-donate-kofi-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 94, 91, 0.4);
+}
+
+.sn-donate-kofi-link:active {
+  transform: translateY(0);
+}
+
+.sn-kofi-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.sn-donate-kofi-link:hover .sn-kofi-icon {
+  transform: scale(1.1) rotate(-5deg);
 }
 
 #sn-donate-qr {

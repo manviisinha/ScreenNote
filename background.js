@@ -109,16 +109,6 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
       });
     });
   }
-
-  if (changes.loggedIn && !changes.loggedIn.newValue) {
-    chrome.tabs.query({}, (tabs) => {
-      tabs.forEach(tab => {
-        if (!isRestrictedUrl(tab.url)) {
-          chrome.tabs.sendMessage(tab.id, { action: 'logout' }).catch(() => {});
-        }
-      });
-    });
-  }
 });
 
 // ── Runtime message handler ───────────────────────────────────────────────────
@@ -130,17 +120,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return true; // async
   }
 
-  if (msg.action === 'notifyLogout') {
-    chrome.tabs.query({}, (tabs) => {
-      tabs.forEach(tab => {
-        if (!isRestrictedUrl(tab.url)) {
-          chrome.tabs.sendMessage(tab.id, { action: 'logout' }).catch(() => {});
-        }
-      });
-    });
-    sendResponse({ success: true });
-    return true;
-  }
 
   if (msg.action === 'exitAllTabs') {
     // Clear drawings and disable annotations on every open tab

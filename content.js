@@ -33,6 +33,8 @@
   let captureMicrophone = true;  // mic preference before recording starts
   let micMuted = false;          // real-time mute state during recording
   let micStream = null;          // dedicated mic MediaStream
+  let micGainNode = null;        // Web Audio gain node for mic volume
+  let recAudioContext = null;    // AudioContext for recording pipeline
   let faceStream = null;
   let faceVideo = null;
   let isDraggingFace = false;
@@ -176,7 +178,7 @@
       </button>
     </div>
 
-    <button class="sn-donate-btn" id="sn-donate-btn" title="Donate via GPay / UPI">₹ Donate</button>
+    <button class="sn-donate-btn" id="sn-donate-btn" title="Support ScreenNote (Ko-fi & UPI)">☕ Donate</button>
   `;
   document.body.appendChild(toolbar);
 
@@ -196,11 +198,52 @@
     popup.innerHTML = `
       <button id="sn-donate-close" title="Close">✕</button>
       <p class="sn-donate-title">☕ Support ScreenNote</p>
-      <p class="sn-donate-sub">Scan with GPay or any UPI app</p>
-      <img src="${qrUrl}" alt="Donate QR Code" id="sn-donate-qr">
-      <p class="sn-donate-upi">manvisinhan4500@oksbi</p>
+      
+      <div class="sn-donate-tabs">
+        <button class="sn-donate-tab active" data-tab="kofi">Ko-fi / Cards</button>
+        <button class="sn-donate-tab" data-tab="upi">UPI Scanner</button>
+      </div>
+
+      <div class="sn-donate-content">
+        <div class="sn-tab-pane active" id="sn-pane-kofi">
+          <p class="sn-donate-sub">Support with Credit Card, PayPal, or UPI globally</p>
+          <a href="https://ko-fi.com/manviisinha" target="_blank" class="sn-donate-kofi-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sn-kofi-icon">
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+              <line x1="6" x2="6" y1="2" y2="4"/>
+              <line x1="10" x2="10" y1="2" y2="4"/>
+              <line x1="14" x2="14" y1="2" y2="4"/>
+            </svg>
+            <span>Support on Ko-fi</span>
+          </a>
+        </div>
+
+        <div class="sn-tab-pane" id="sn-pane-upi">
+          <p class="sn-donate-sub">Scan with GPay, PhonePe, or any UPI app</p>
+          <img src="${qrUrl}" alt="Donate QR Code" id="sn-donate-qr">
+          <p class="sn-donate-upi">manvisinhan4500@oksbi</p>
+        </div>
+      </div>
     `;
     document.body.appendChild(popup);
+
+    // Tab switcher logic
+    const tabs = popup.querySelectorAll('.sn-donate-tab');
+    const panes = popup.querySelectorAll('.sn-tab-pane');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetTab = tab.dataset.tab;
+
+        tabs.forEach(t => t.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        popup.querySelector(`#sn-pane-${targetTab}`).classList.add('active');
+      });
+    });
 
     popup.querySelector('#sn-donate-close').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -511,7 +554,6 @@
 
   function undo() {
     if (strokes.length > 0) {
-      const dpr = window.devicePixelRatio || 1;
       redoStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
       const lastStroke = strokes.pop();
       ctx.putImageData(lastStroke, 0, 0);
@@ -882,9 +924,6 @@
       const mimeType = mimePreference.find(m => MediaRecorder.isTypeSupported(m)) || 'video/webm';
       recordedChunks = [];
       mediaRecorder = new MediaRecorder(compositeStream, { mimeType });
-      console.log('ScreenNote: recording | mimeType:', mimeType,
-        '| audioTracks:', compositeStream.getAudioTracks().length,
-        '| videoTracks:', compositeStream.getVideoTracks().length);
 
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) recordedChunks.push(e.data);
@@ -1066,36 +1105,31 @@
       case 'clearAll':
         clearAll();
         break;
-
-      case 'logout':
-        // Clear all drawings and reset state on logout
-        ctx.clearRect(0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
-        strokes = [];
-        redoStack = [];
-        overlay.classList.remove('active');
-        setToolbarVisible(false);
-        commitText();
-        break;
     }
   });
 
   // Keyboard shortcuts when annotating
   document.addEventListener('keydown', (e) => {
     if (!overlay.classList.contains('active')) return;
-    if (document.activeElement === textInput) return;
+    // Don't steal keypresses from any focusable / editable element on the host page
+    const active = document.activeElement;
+    if (active && (active === textInput ||
+        active.tagName === 'INPUT' ||
+        active.tagName === 'TEXTAREA' ||
+        active.tagName === 'SELECT' ||
+        active.isContentEditable)) return;
 
     if (e.ctrlKey && e.key === 'z') { undo(); e.preventDefault(); }
     if (e.ctrlKey && e.key === 'y') { redo(); e.preventDefault(); }
-    if (e.key === 'p') setTool('pen');
-    if (e.key === 'a') setTool('arrow');
-    if (e.key === 'r') setTool('rect');
-    if (e.key === 't') setTool('text');
-    if (e.key === 'h') setTool('highlight');
-    if (e.key === 'e') setTool('eraser');
-    if (e.key === 's') savePNG();
-    if (e.key === 'm' || e.key === 'M') {
-      // Toggle mic mute
-      micToggle.click();
+    if (!e.ctrlKey && !e.altKey && !e.metaKey) {
+      if (e.key === 'p') setTool('pen');
+      if (e.key === 'a') setTool('arrow');
+      if (e.key === 'r') setTool('rect');
+      if (e.key === 't') setTool('text');
+      if (e.key === 'h') setTool('highlight');
+      if (e.key === 'e') setTool('eraser');
+      if (e.key === 's') savePNG();
+      if (e.key === 'm' || e.key === 'M') micToggle.click();
     }
     if (e.key === 'Escape') {
       overlay.classList.remove('active');

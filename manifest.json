@@ -33,7 +33,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["overlay.html", "Donate.jpeg"],
+      "resources": ["Donate.jpeg", "icons/*.png"],
       "matches": ["<all_urls>"]
     }
   ]
