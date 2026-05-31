@@ -558,3 +558,21 @@
   letter-spacing: 0.3px;
   font-family: 'Courier New', monospace;
 }
+
+/* ── Privacy Auto-Blur Styles ────────────────────────────────────────────── */
+body.sn-privacy-active .sn-blurred-text,
+body.sn-privacy-active .sn-privacy-input,
+body.sn-privacy-active input[type="password"] {
+  filter: blur(8px) !important;
+  color: transparent !important;
+  text-shadow: 0 0 10px rgba(100, 116, 139, 0.8) !important;
+  transition: filter 0.2s cubic-bezier(0.4, 0, 0.2, 1), text-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Blur toggle active state - vibrant brand pink match */
+#screennote-toolbar .sn-tool#sn-blur-toggle.active {
+  background: rgba(244, 114, 182, 0.2) !important;
+  border-color: rgba(244, 114, 182, 0.5) !important;
+  color: #f472b6 !important;
+}
+
