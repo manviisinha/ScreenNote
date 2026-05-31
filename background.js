@@ -123,7 +123,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg.action === 'exitAllTabs') {
     // Clear drawings and disable annotations on every open tab
-    chrome.storage.local.set({ screennoteActive: false });
+    chrome.storage.local.set({ 
+      screennoteActive: false,
+      screennotePrivacyActive: false
+    });
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach(tab => {
         if (!isRestrictedUrl(tab.url)) {
