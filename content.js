@@ -61,6 +61,221 @@
     if (faceVideo) faceVideo.style.cursor = 'grab';
   });
 
+  // ── Privacy Mode (Auto-Blur) State & Core Functions ───────────────────────
+  let isPrivacyActive = false;
+  let privacyObserver = null;
+  const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+
+  function blurEmailsInTextNode(textNode) {
+    const text = textNode.nodeValue;
+    emailPattern.lastIndex = 0;
+    if (!emailPattern.test(text)) return;
+
+    const parent = textNode.parentNode;
+    if (!parent) return;
+
+    emailPattern.lastIndex = 0;
+    const fragment = document.createDocumentFragment();
+    let lastIndex = 0;
+    let match;
+
+    while ((match = emailPattern.exec(text)) !== null) {
+      const matchIndex = match.index;
+      const matchedText = match[0];
+
+      if (matchIndex > lastIndex) {
+        fragment.appendChild(document.createTextNode(text.substring(lastIndex, matchIndex)));
+      }
+
+      const span = document.createElement('span');
+      span.className = 'sn-blurred-text';
+      span.textContent = matchedText;
+      fragment.appendChild(span);
+
+      lastIndex = emailPattern.lastIndex;
+    }
+
+    if (lastIndex < text.length) {
+      fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+    }
+
+    parent.replaceChild(fragment, textNode);
+  }
+
+  function scanAndWrapEmails(rootNode = document.body) {
+    if (!rootNode) return;
+
+    const walker = document.createTreeWalker(
+      rootNode,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function (node) {
+          const parent = node.parentNode;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+
+          const skipTags = ['SCRIPT', 'STYLE', 'INPUT', 'TEXTAREA', 'NOSCRIPT', 'IFRAME'];
+          if (
+            skipTags.includes(parent.tagName) ||
+            parent.closest('.sn-blurred-text') ||
+            parent.closest('#screennote-toolbar') ||
+            parent.closest('#screennote-overlay')
+          ) {
+            return NodeFilter.FILTER_REJECT;
+          }
+
+          emailPattern.lastIndex = 0;
+          if (emailPattern.test(node.nodeValue)) {
+            return NodeFilter.FILTER_ACCEPT;
+          }
+
+          return NodeFilter.FILTER_REJECT;
+        }
+      }
+    );
+
+    const nodesToProcess = [];
+    while (walker.nextNode()) {
+      nodesToProcess.push(walker.currentNode);
+    }
+
+    nodesToProcess.forEach(node => {
+      blurEmailsInTextNode(node);
+    });
+  }
+
+  function checkInputsInElement(root = document.body) {
+    if (!root) return;
+    const inputs = root.querySelectorAll ? root.querySelectorAll('input') : [];
+    inputs.forEach(input => {
+      if (input.type === 'password' || input.type === 'email') {
+        input.classList.add('sn-privacy-input');
+      } else {
+        emailPattern.lastIndex = 0;
+        if (emailPattern.test(input.value)) {
+          input.classList.add('sn-privacy-input');
+        } else {
+          input.classList.remove('sn-privacy-input');
+        }
+      }
+    });
+  }
+
+  function handlePrivacyInputEvent(e) {
+    if (e.target && e.target.tagName === 'INPUT') {
+      const input = e.target;
+      if (input.type === 'password' || input.type === 'email') {
+        input.classList.add('sn-privacy-input');
+      } else {
+        emailPattern.lastIndex = 0;
+        if (emailPattern.test(input.value)) {
+          input.classList.add('sn-privacy-input');
+        } else {
+          input.classList.remove('sn-privacy-input');
+        }
+      }
+    }
+  }
+
+  function startPrivacyObserver() {
+    if (privacyObserver) return;
+
+    privacyObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach(node => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              scanAndWrapEmails(node);
+              checkInputsInElement(node);
+            } else if (node.nodeType === Node.TEXT_NODE) {
+              const parent = node.parentNode;
+              if (parent) {
+                const skipTags = ['SCRIPT', 'STYLE', 'INPUT', 'TEXTAREA', 'NOSCRIPT', 'IFRAME'];
+                if (
+                  !skipTags.includes(parent.tagName) &&
+                  !parent.closest('.sn-blurred-text') &&
+                  !parent.closest('#screennote-toolbar') &&
+                  !parent.closest('#screennote-overlay')
+                ) {
+                  emailPattern.lastIndex = 0;
+                  if (emailPattern.test(node.nodeValue)) {
+                    blurEmailsInTextNode(node);
+                  }
+                }
+              }
+            }
+          });
+        } else if (mutation.type === 'characterData') {
+          const node = mutation.target;
+          const parent = node.parentNode;
+          if (parent) {
+            const skipTags = ['SCRIPT', 'STYLE', 'INPUT', 'TEXTAREA', 'NOSCRIPT', 'IFRAME'];
+            if (
+              !skipTags.includes(parent.tagName) &&
+              !parent.closest('.sn-blurred-text') &&
+              !parent.closest('#screennote-toolbar') &&
+              !parent.closest('#screennote-overlay')
+            ) {
+              emailPattern.lastIndex = 0;
+              if (emailPattern.test(node.nodeValue)) {
+                blurEmailsInTextNode(node);
+              }
+            }
+          }
+        }
+      }
+    });
+
+    privacyObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  }
+
+  function enablePrivacyMode(showToastNotification = true) {
+    isPrivacyActive = true;
+    document.body.classList.add('sn-privacy-active');
+
+    const blurBtn = toolbar.querySelector('#sn-blur-toggle');
+    if (blurBtn) blurBtn.classList.add('active');
+
+    scanAndWrapEmails();
+    checkInputsInElement();
+
+    document.addEventListener('input', handlePrivacyInputEvent, true);
+    startPrivacyObserver();
+
+    chrome.storage.local.set({ screennotePrivacyActive: true });
+
+    if (showToastNotification) {
+      showToast(
+        '🔒 Privacy Mode Active',
+        'Passwords and email addresses are now automatically blurred on this screen.',
+        'info'
+      );
+    }
+  }
+
+  function disablePrivacyMode() {
+    isPrivacyActive = false;
+    document.body.classList.remove('sn-privacy-active');
+
+    const blurBtn = toolbar.querySelector('#sn-blur-toggle');
+    if (blurBtn) blurBtn.classList.remove('active');
+
+    document.removeEventListener('input', handlePrivacyInputEvent, true);
+    if (privacyObserver) {
+      privacyObserver.disconnect();
+      privacyObserver = null;
+    }
+
+    document.querySelectorAll('.sn-privacy-input').forEach(input => {
+      input.classList.remove('sn-privacy-input');
+    });
+
+    chrome.storage.local.set({ screennotePrivacyActive: false });
+  }
+
   // ── DOM Setup ────────────────────────────────────────────────────────────
   const overlay = document.createElement('div');
   overlay.id = 'screennote-overlay';
@@ -145,6 +360,15 @@
       </button>
       <button class="sn-tool" data-tool="circle" title="Circle">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+      </button>
+      <button class="sn-tool" id="sn-blur-toggle" title="Auto-Blur Emails & Passwords">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+          <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+          <line x1="2" x2="22" y1="2" y2="22"/>
+        </svg>
+        <span class="sn-tool-label">Blur</span>
       </button>
     </div>
 
@@ -280,6 +504,16 @@
     size = parseInt(e.target.value);
   });
 
+  const blurToggle = toolbar.querySelector('#sn-blur-toggle');
+  blurToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isPrivacyActive) {
+      disablePrivacyMode();
+    } else {
+      enablePrivacyMode();
+    }
+  });
+
   toolbar.querySelector('#sn-undo').addEventListener('click', (e) => {
     e.stopPropagation();
     undo();
@@ -309,6 +543,7 @@
     overlay.classList.remove('active');
     setToolbarVisible(false);
     commitText();
+    disablePrivacyMode(); // Ensure privacy mode is turned off immediately on exit
     // Tell background.js to disable annotations on ALL open tabs
     chrome.runtime.sendMessage({ action: 'exitAllTabs' });
   });
@@ -402,7 +637,7 @@
   }
 
   // ── Restore toolbar position & visibility from storage ──────────────────
-  chrome.storage.local.get(['screennoteActive', 'toolbarLeft', 'toolbarTop'], (data) => {
+  chrome.storage.local.get(['screennoteActive', 'screennotePrivacyActive', 'toolbarLeft', 'toolbarTop'], (data) => {
     // Restore saved position if present, removing the CSS centering transform
     if (typeof data.toolbarLeft === 'number' && typeof data.toolbarTop === 'number') {
       toolbar.style.transform = 'none';
@@ -416,22 +651,37 @@
       // the user can start drawing by clicking a drawing tool.
       setToolbarVisible(true);
     }
+
+    if (data.screennotePrivacyActive) {
+      enablePrivacyMode(false);
+    }
   });
 
-  // ── React to screennoteActive changes directly in content script ──────────
+  // ── React to screennoteActive & screennotePrivacyActive changes directly in content script ──
   // chrome.storage.onChanged fires in ALL content scripts instantly when
   // storage changes — no background.js message round-trip needed.
   // This is the most reliable way to sync toolbar state across all tabs.
   try {
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName !== 'local' || !('screennoteActive' in changes)) return;
+      if (areaName !== 'local') return;
       try {
-        if (changes.screennoteActive.newValue) {
-          setToolbarVisible(true);
-        } else {
-          overlay.classList.remove('active');
-          setToolbarVisible(false);
-          commitText();
+        if ('screennoteActive' in changes) {
+          if (changes.screennoteActive.newValue) {
+            setToolbarVisible(true);
+          } else {
+            overlay.classList.remove('active');
+            setToolbarVisible(false);
+            commitText();
+          }
+        }
+
+        if ('screennotePrivacyActive' in changes) {
+          const val = changes.screennotePrivacyActive.newValue;
+          if (val) {
+            enablePrivacyMode(false);
+          } else {
+            disablePrivacyMode();
+          }
         }
       } catch (_) {}
     });
@@ -1076,6 +1326,7 @@
         overlay.classList.remove('active');
         setToolbarVisible(false);
         commitText();
+        disablePrivacyMode(); // Ensure privacy mode is turned off on exit
         break;
 
       case 'updateTool':
