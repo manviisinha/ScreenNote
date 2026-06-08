@@ -6,6 +6,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge%20%7C%20Brave-blue.svg)](#)
 [![Manifest](https://img.shields.io/badge/Manifest-V3-brightgreen.svg)](#)
 [![Tech](https://img.shields.io/badge/Tech-Vanilla%20JS%20%7C%20WebRTC%20%7C%20Canvas%202D-orange.svg)](#)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Install%20Now-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/hmedeanfffglpfpbhkonnidmlgjgmopp?utm_source=item-share-cb)
 
 **A zero-install, browser-native Chrome extension that combines pro-grade screen annotations, HD screen recording, microphone capture, and picture-in-picture webcam streaming into a single, lightweight tool.**
 
@@ -50,9 +51,21 @@ Draw arrows, highlight formulas, type inline annotations, and record your screen
 
 ---
 
+## 🌐 Chrome Web Store
+
+ScreenNote is live on the **Chrome Web Store** — install it instantly, no developer mode required:
+
+<div align="center">
+  <a href="https://chromewebstore.google.com/detail/hmedeanfffglpfpbhkonnidmlgjgmopp?utm_source=item-share-cb">
+    <img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/HRs9MPufa1J1h5glNhut.png" alt="Available in the Chrome Web Store" width="248" height="75" />
+  </a>
+</div>
+
+---
+
 ## 🚀 Installation (Developer Mode)
 
-> ScreenNote is not yet on the Chrome Web Store. Load it as an unpacked extension:
+> Prefer to load it yourself? Use developer mode:
 
 1. **Clone / Download** this repository.
 2. Open **`chrome://extensions/`** in Chrome, Edge, or Brave.
