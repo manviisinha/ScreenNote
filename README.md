@@ -51,15 +51,31 @@ Draw arrows, highlight formulas, type inline annotations, and record your screen
 
 ---
 
-## 🌐 Chrome Web Store
+## 🌐 Install from the Chrome Web Store
 
-ScreenNote is live on the **Chrome Web Store** — install it instantly, no developer mode required:
+> **The easiest way to get ScreenNote** — no developer mode, no unzipping, no setup.
 
 <div align="center">
-  <a href="https://chromewebstore.google.com/detail/hmedeanfffglpfpbhkonnidmlgjgmopp?utm_source=item-share-cb">
-    <img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/HRs9MPufa1J1h5glNhut.png" alt="Available in the Chrome Web Store" width="248" height="75" />
-  </a>
+
+<a href="https://chromewebstore.google.com/detail/hmedeanfffglpfpbhkonnidmlgjgmopp?utm_source=item-share-cb">
+  <img src="https://img.shields.io/badge/%F0%9F%9A%80%20Install%20ScreenNote-Chrome%20Web%20Store-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Install on Chrome" />
+</a>
+
 </div>
+
+<br/>
+
+<div align="center">
+
+| 🔒 Zero permissions abuse | ⚡ Instant activation | 🆓 Completely free | 🔄 Auto-updates |
+|:---:|:---:|:---:|:---:|
+| Only what's needed | Works right after install | No hidden fees | Always the latest version |
+
+</div>
+
+👉 **[Click here to install ScreenNote →](https://chromewebstore.google.com/detail/hmedeanfffglpfpbhkonnidmlgjgmopp?utm_source=item-share-cb)**
+
+If you enjoy using it, please consider ⭐ **leaving a review** on the store — it helps others discover ScreenNote!
 
 ---
 
